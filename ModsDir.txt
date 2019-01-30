@@ -1,1 +1,0 @@
-/sdcard/games/com.mojang/mods
