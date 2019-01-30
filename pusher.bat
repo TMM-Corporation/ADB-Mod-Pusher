@@ -183,7 +183,7 @@ cls
 ::echo. Special:            Special
 echo. Created at:       28.01.2019
 echo. Version:          %version%
-echo. Last Updated:     30.01.19 16:10
+echo. Last Updated:     30.01.19 17:10
 echo. Developed by:     TMM Corporation, Anton Kryzhanovskiy  
 echo. If program says:  files not found - please rename paths from russian to english chars
 >nul pause
