@@ -1,9 +1,12 @@
 ::[Bat To Exe Converter]
 ::
-::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135Y1s4UCXs=
-::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR935Yr8ICLQtRMBanYm8=
-::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR935Yr8ICOQhaXwKiIAs4pQ4=
 ::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR12pK1sgKC3s=
+::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135Yy50wDR9aMBeza28=
+::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135Yy50wLR9aSRulTx8952pOugQ=
+::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135Yy50wLR9aSRulWxw2iH5L+GCJO6c=
+::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135YzJswDR9aMBeza28=
+::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135YzJswLR9aSRulTx8952pOugQ=
+::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135YzJswLR9aSRulWxw2iH5L+GCJO6c=
 ::YAwzoRdxOk+EWAjk
 ::fBw5plQjdCyDJGyX8VAjFA5HSRa+GGS5E7gZ5vzo082OtmUIVt4eXK321bC+NfMb71fYZYM+3n9I1sIPA3s=
 ::YAwzuBVtJxjWCl3EqQJgSA==
@@ -30,7 +33,7 @@
 ::ZQ0/vhVqMQ3MEVWAtB9wBhRaATSQNX27ErB8
 ::Zg8zqx1/OA3MEVWAtB9wGwtRTw2DMAs=
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCyDJGyX8VAjFA5HSRa+GGS5E7gZ5vzo082OtmUIVt4eXK321bC+NfMb71fYVLIP5m9JkM4eREoWKjCueg5952taswQ=
+::Zh4grVQjdCyDJGyX8VAjFA5HSRa+GGS5E7gZ5vzo082OtmUIVt4eXK321bC+NfMb71fYVLIP5m9JkM4eREoWKzCueg5952taswQ=
 ::YB416Ek+ZG8=
 ::
 ::
@@ -45,23 +48,10 @@ cls
 ping -n 2 127.0.0.1 > NUL
 cls
 :general_menu
-set version=1.4(Beta)
+set version=1.5(Beta)
 if /i %debug_mode%==true echo on
 if /i %debug_mode%==false echo off
 cls
-@adb start-server > NUL
-cls
-title ADB Mod Pusher %version%
-echo.   Serial       Status
-adb devices -l | find "device product:" >nul
-if errorlevel 1 (
-echo.    null    not connected
-	echo.  
-) else (
-adb devices | findstr "\<device\>"
-echo.
-)
-cd %CD%
 @for /f "usebackq  delims=" %%i in (`find /n /v "" app.cfg ^| find "[1]"`) do (
 	set ModDir=%%i
 )
@@ -71,6 +61,20 @@ cd %CD%
 @for /f "usebackq  delims=" %%i in (`find /n /v "" app.cfg ^| find "[3]"`) do (
 	set ADBDir=%%i
 )
+if /i %ADBDir:~12%=="" break>%CD%\app.cfg & @echo.%ModDir:~3%>>%CD%\app.cfg & @echo.%ModsDir:~3%>>%CD%\app.cfg & @echo.ADBDir:  "%CD%\adb36\adb.exe">>%CD%\app.cfg & goto general_menu
+@%ADBDir:~12% start-server > NUL
+cls
+title ADB Mod Pusher %version%
+echo.Serial or IP    Status
+%ADBDir:~12% devices -l | find "device product:" >nul
+if errorlevel 1 (
+echo.    null    not connected
+	echo.
+) else (
+%ADBDir:~12% devices | findstr "\<device\>"
+echo.
+)
+cd %CD%
 echo.  1 -  Push To %ModsDir:~12%
 echo.    InnerCore:
 echo.  2 -  Run/Restart InnerCore
@@ -83,7 +87,6 @@ echo.  7 -  ADB:             %ADBDir:~12%
 echo.    Program:
 echo.  A -  About Programm
 echo.  Enter -  Refresh
-
 set g_menu=x
 set /p g_menu=" Input: "
 cls
@@ -107,7 +110,7 @@ goto general_menu
 :close_inner
 cls
 echo. Closing InnerCore
-adb shell am force-stop com.zhekasmirnov.innercore
+%ADBDir:~12% shell am force-stop com.zhekasmirnov.innercore
 echo.  Closed
 echo. Press Any Key To exit...
 >nul pause
@@ -117,7 +120,7 @@ goto general_menu
 cls
 echo. Running/Restarting InnerCore
 echo.  Closing
-adb shell am force-stop com.zhekasmirnov.innercore & adb shell monkey -p com.zhekasmirnov.innercore 1
+%ADBDir:~12% shell am force-stop com.zhekasmirnov.innercore & adb shell monkey -p com.zhekasmirnov.innercore 1
 echo.  Running
 echo. Press Any Key To exit...
 >nul pause
@@ -125,12 +128,12 @@ goto general_menu
 
 :push_and_run
 echo. Closing
-adb shell am force-stop com.zhekasmirnov.innercore
+%ADBDir:~12% shell am force-stop com.zhekasmirnov.innercore
 echo. Pushing to device
-adb push %ModDir:~12% %ModsDir:~12%
+%ADBDir:~12% push %ModDir:~12% %ModsDir:~12%
 echo.  Pushed
 echo. Running InnerCore
-adb shell monkey -p com.zhekasmirnov.innercore 1
+%ADBDir:~12% shell monkey -p com.zhekasmirnov.innercore 1
 echo. Press Any Key To exit...
 >nul pause
 goto general_menu
@@ -141,7 +144,7 @@ title Changing PC ModDir
 echo. Current %ModDir:~3%
 set /p new_pc= "Input pc mod dir: "
 break>%CD%\app.cfg
-@echo.ModDir:  %new_pc%>>%CD%\app.cfg
+@echo.ModDir:  "%new_pc%">>%CD%\app.cfg
 @echo.%ModsDir:~3%>>%CD%\app.cfg
 @echo.%ADBDir:~3%>>%CD%\app.cfg
 goto general_menu
@@ -150,22 +153,29 @@ goto general_menu
 cls
 title Changing Android ModsDir
 echo. Current %ModsDir:~3%
+echo. Default: /sdcard/games/com.mojang/mods
 set /p new_android= "Input android mod dir: "
+if /i %new_android%=="Input android mod dir: " set new_android= "/sdcard/games/com.mojang/mods"
 break>%CD%\app.cfg
 @echo.%ModDir:~3%>>%CD%\app.cfg
 @echo.ModsDir: %new_android%>>%CD%\app.cfg
 @echo.%ADBDir:~3%>>%CD%\app.cfg
 goto general_menu
 
+
 :change_adb_dir
 cls
 title Changing ADBDir
 echo. Current %ADBDir:~3%
-set /p new_adb= "Input adb dir: "
+echo. Default: %CD%\adb.exe
+echo. Before changing adb please disconnect all android devices
+echo. After adb changed, adb restarts!!!
+set /p new_adb= "  Input adb executable dir: "
+if /i %new_adb%=="" set new_adb=%CD%\adb36\adb.exe
 break>%CD%\app.cfg
 @echo.%ModDir:~3%>>%CD%\app.cfg
 @echo.%ModsDir:~3%>>%CD%\app.cfg
-@echo.ADBDir:  %new_adb%>>%CD%\app.cfg
+@echo.ADBDir:  "%new_adb%">>%CD%\app.cfg
 goto general_menu
 
 :about_app
@@ -184,7 +194,7 @@ cls
 echo. Created at:       28.01.2019
 echo. Version:          %version%
 echo. Last Updated:     30.01.19 17:10
-echo. Developed by:     TMM Corporation, Anton Kryzhanovskiy  
+echo. Developed by:     TMM Corporation, Anton Kryzhanovskiy
 echo. If program says:  files not found - please rename paths from russian to english chars
 >nul pause
 goto general_menu
@@ -200,6 +210,8 @@ echo. new_adb      %new_adb%
 echo. new_android  %new_android%
 echo. new_pc       %new_pc%
 echo. g_menu       %g_menu%
+echo. adb version:
+                   %ADBDir:~12% version
 echo. Debug mode   %debug_mode%
 if /i %debug_mode%==true echo on & set /p debug_mode=" Disable? "
 if /i %debug_mode%==false echo off & set /p debug_mode=" Enable? "
