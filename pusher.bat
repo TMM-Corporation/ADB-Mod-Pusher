@@ -1,12 +1,10 @@
 ::[Bat To Exe Converter]
 ::
 ::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR12pK1sgKC3s=
-::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135Yy50wDR9aMBeza28=
-::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135Yy50wLR9aSRulTx8952pOugQ=
-::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135Yy50wLR9aSRulWxw2iH5L+GCJO6c=
-::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135YzJswDR9aMBeza28=
-::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135YzJswLR9aSRulTx8952pOugQ=
-::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135YzJswLR9aSRulWxw2iH5L+GCJO6c=
+::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135Yy51CCQNdHg==
+::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR135YzJtCCQNdHg==
+::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR935Yr8ICLQtRMBanYm8=
+::fBE1pAF6MU+EWHreyHcjLQlHcBGROXmGIrof/eX+4f6UnmoUQMoqerP6/pajL+Qj/1bscIQR935Yr8ICOQhaXwKiIAs4pQ4=
 ::YAwzoRdxOk+EWAjk
 ::fBw5plQjdCyDJGyX8VAjFA5HSRa+GGS5E7gZ5vzo082OtmUIVt4eXK321bC+NfMb71fYZYM+3n9I1sIPA3s=
 ::YAwzuBVtJxjWCl3EqQJgSA==
@@ -21,7 +19,7 @@
 ::dAsiuh18IRvcCxnZtBJQ
 ::cRYluBh/LU+EWAnk
 ::YxY4rhs+aU+IeA==
-::cxY6rQJ7JhzQF1fEqQJhZk8cbgGWPSLa
+::cxY6rQJ7JhzQF1fEqQJhZk4cbgGWPSLa
 ::ZQ05rAF9IBncCkqN+0xwdVsFAlTi
 ::ZQ05rAF9IAHYFVzEqQIRDDkUYQuGfFuvFb0Z+og=
 ::eg0/rx1wNQPfEVWB+kM9LVsJDCWmHluvFb0Z+og=
@@ -33,7 +31,7 @@
 ::ZQ0/vhVqMQ3MEVWAtB9wBhRaATSQNX27ErB8
 ::Zg8zqx1/OA3MEVWAtB9wGwtRTw2DMAs=
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCyDJGyX8VAjFA5HSRa+GGS5E7gZ5vzo082OtmUIVt4eXK321bC+NfMb71fYVLIP5m9JkM4eREoWKzCueg5952taswQ=
+::Zh4grVQjdCyDJGyX8VAjFA5HSRa+GGS5E7gZ5vzo082OtmUIVt4eXK321bC+NfMb71fYcI4o6lt+uvsZHxNdbFr6IFoWrHpD/yqAL8L8
 ::YB416Ek+ZG8=
 ::
 ::
@@ -61,7 +59,7 @@ cls
 @for /f "usebackq  delims=" %%i in (`find /n /v "" app.cfg ^| find "[3]"`) do (
 	set ADBDir=%%i
 )
-if /i %ADBDir:~12%=="" break>%CD%\app.cfg & @echo.%ModDir:~3%>>%CD%\app.cfg & @echo.%ModsDir:~3%>>%CD%\app.cfg & @echo.ADBDir:  "%CD%\adb36\adb.exe">>%CD%\app.cfg & goto general_menu
+if /i %ADBDir:~12%=="" break>%CD%\app.cfg & @echo.%ModDir:~3%>>%CD%\app.cfg & @echo.%ModsDir:~3%>>%CD%\app.cfg & @echo.ADBDir:  "%CD%\adb36.exe">>%CD%\app.cfg & goto general_menu
 @%ADBDir:~12% start-server > NUL
 cls
 title ADB Mod Pusher %version%
@@ -171,7 +169,7 @@ echo. Default: %CD%\adb.exe
 echo. Before changing adb please disconnect all android devices
 echo. After adb changed, adb restarts!!!
 set /p new_adb= "  Input adb executable dir: "
-if /i %new_adb%=="" set new_adb=%CD%\adb36\adb.exe
+if /i %new_adb%=="" set new_adb=%CD%\adb36.exe
 break>%CD%\app.cfg
 @echo.%ModDir:~3%>>%CD%\app.cfg
 @echo.%ModsDir:~3%>>%CD%\app.cfg
