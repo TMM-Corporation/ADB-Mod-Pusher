@@ -42,9 +42,9 @@ set debug_mode=false
 cls
 @Color 0F
 @ECHO. Loading...
+:general_menu
 ping -n 2 127.0.0.1 > NUL
 cls
-:general_menu
 set version=1.5(Beta)
 if /i %debug_mode%==true echo on
 if /i %debug_mode%==false echo off
@@ -58,7 +58,11 @@ cls
 @for /f "usebackq  delims=" %%i in (`find /n /v "" app.cfg ^| find "[3]"`) do (
 	set ADBDir=%%i
 )
-if /i %ADBDir:~12%=="" break>%CD%\app.cfg & @echo.%ModDir:~3%>>%CD%\app.cfg & @echo.%ModsDir:~3%>>%CD%\app.cfg & @echo.ADBDir:  "%CD%\adb36.exe">>%CD%\app.cfg & goto general_menu
+@for /f "usebackq  delims=" %%i in (`find /n /v "" app.cfg ^| find "[4]"`) do (
+	set WinDir=%%i
+)
+if /i %ADBDir:~12%=="" break>%CD%\app.cfg & @echo.%ModDir:~3%>>%CD%\app.cfg & @echo.%ModsDir:~3%>>%CD%\app.cfg & @echo.ADBDir:  "%CD%\adb36.exe">>%CD%\app.cfg & @echo.%WinDir%>>%CD%\app.cfg & goto general_menu
+%ADBDir:~12% connect 127.0.0.1:62001
 @%ADBDir:~12% start-server > NUL
 cls
 title ADB Mod Pusher %version%
@@ -81,8 +85,10 @@ echo.    Change Dirs:
 echo.  5 -  Mod on pc:       %ModDir:~12%
 echo.  6 -  Mods on android: %ModsDir:~12%
 echo.  7 -  ADB:             %ADBDir:~12%
+echo.  8 -  Windows:         %WinDir:~12%
 echo.    Program:
 echo.  A -  About Programm
+echo.  W -  Copy ADB To %CD:~0,3%Windows
 echo.  Enter -  Refresh
 set g_menu=x
 set /p g_menu=" Input: "
@@ -93,16 +99,19 @@ if /i %g_menu%==1 adb push %ModDir:~12% %ModsDir:~12%
 if /i %g_menu%==2 goto run_restart_inner
 if /i %g_menu%==3 goto close_inner
 if /i %g_menu%==4 goto push_and_run
-
 if /i %g_menu%==5 goto change_mod_dir
 if /i %g_menu%==6 goto change_mods_dir
 if /i %g_menu%==7 goto change_adb_dir
+if /i %g_menu%==8 goto change_sys_dir
 
+::CHANGED new line for exporting adb files to Windows
+if /i %g_menu%==w call %CD%\win_adb.exe
 if /i %g_menu%==a goto about_app
 
 if /i %g_menu%==2a581aff-c662-43d4-ad53-3fef822c6557 goto debugging
 cls
 goto general_menu
+
 
 :close_inner
 cls
@@ -113,15 +122,18 @@ echo. Press Any Key To exit...
 >nul pause
 goto general_menu
 
+
 :run_restart_inner
 cls
 echo. Running/Restarting InnerCore
 echo.  Closing
+%ADBDir:~12% connect 127.0.0.1:62001
 %ADBDir:~12% shell am force-stop com.zhekasmirnov.innercore & adb shell monkey -p com.zhekasmirnov.innercore 1
 echo.  Running
 echo. Press Any Key To exit...
 >nul pause
 goto general_menu
+
 
 :push_and_run
 echo. Closing
@@ -135,6 +147,7 @@ echo. Press Any Key To exit...
 >nul pause
 goto general_menu
 
+
 :change_mod_dir
 cls
 title Changing PC ModDir
@@ -144,7 +157,9 @@ break>%CD%\app.cfg
 @echo.ModDir:  "%new_pc%">>%CD%\app.cfg
 @echo.%ModsDir:~3%>>%CD%\app.cfg
 @echo.%ADBDir:~3%>>%CD%\app.cfg
+@echo.%WinDir%>>%CD%\app.cfg
 goto general_menu
+
 
 :change_mods_dir
 cls
@@ -157,6 +172,7 @@ break>%CD%\app.cfg
 @echo.%ModDir:~3%>>%CD%\app.cfg
 @echo.ModsDir: %new_android%>>%CD%\app.cfg
 @echo.%ADBDir:~3%>>%CD%\app.cfg
+@echo.%WinDir%>>%CD%\app.cfg
 goto general_menu
 
 
@@ -173,6 +189,28 @@ break>%CD%\app.cfg
 @echo.%ModDir:~3%>>%CD%\app.cfg
 @echo.%ModsDir:~3%>>%CD%\app.cfg
 @echo.ADBDir:  "%new_adb%">>%CD%\app.cfg
+@echo.%WinDir%>>%CD%\app.cfg
+goto general_menu
+
+
+:change_sys_dir
+cls
+title Changing Windows Dir
+echo. Current: %WinDir:~12%
+echo. Default: %CD:~0,3%Windows
+set /p new_win="Input Windows dir: "
+echo."%new_win%"
+pause
+::BUG at this line craches
+if /i %new_win%==""  set new_win= %CD:~0,2%\Windows
+pause
+break>%CD%\app.cfg
+@echo.%ModDir:~3%>>%CD%\app.cfg
+@echo.%ModsDir:~3%>>%CD%\app.cfg
+@echo.%ADBDir:~3%>>%CD%\app.cfg
+::TODO Make changable windir
+@echo.SysDir:  "%new_win%">>%CD%\app.cfg
+pause
 goto general_menu
 
 :about_app
