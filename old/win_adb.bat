@@ -36,6 +36,7 @@
 @echo off
 title WindowsADBExporter
 @Color 0F
-copy /y %CD%\adb.exe %CD:~0,3%Windows
-copy /y %CD%\AdbWinApi.dll %CD:~0,3%Windows
-copy /y %CD%\AdbWinUsbApi.dll %CD:~0,3%Windows
+copy /y %CD%\adb.exe %WINDIR%
+copy /y %CD%\AdbWinApi.dll %WINDIR%
+copy /y %CD%\AdbWinUsbApi.dll %WINDIR%
+pause
